@@ -45,4 +45,16 @@ public class FTE extends EmployeeInfo {
         return (yearlySalary *(1.0 - deductRate));
     }
     
+    public String getAttributes(){
+        String formattedEmpNum = String.format("%06d", empNum);
+        return (formattedEmpNum + ", " 
+                + firstName + ", " 
+                + lastName + ", " 
+                + gender + ", " 
+                + workLoc + ", " 
+                + deductRate + ", " 
+                + yearlySalary + ", " 
+                + calcNetAnnualIncome());
+    }
+    
 }

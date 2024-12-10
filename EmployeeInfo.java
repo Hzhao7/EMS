@@ -38,12 +38,36 @@ public class EmployeeInfo {
     	return lastName;
     }
     
-    public int getGender() {
-    	return gender;
+    public String getGender() {
+        if (gender == 0){
+            return "Male";
+        }
+        if (gender == 1){
+            return "Female";
+        }
+        if (gender == 2){
+            return "Other";
+        }
+        return null;
     }
     
-    public int getWorkLoc() {
-    	return workLoc;
+    public String getWorkLoc() {
+    	if (workLoc == 0){
+            return "Mississauga";
+        }
+        if (workLoc == 1){
+            return "Toronto";
+        }
+        if (workLoc == 2){
+            return "Silicon Valley";
+        }
+        if (workLoc == 3){
+            return "Texas";
+        }
+        if (workLoc == 4){
+            return "Other";
+        }
+        return null;
     }
     
     public double getDeduct() {

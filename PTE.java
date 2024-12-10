@@ -48,6 +48,20 @@ public class PTE extends EmployeeInfo {
     public double calcNetAnnualIncome() {
         return ((hourlyWage * hoursPerWeek * weeksPerYear) *(1.0 - deductRate));
     }
-
+    
+    public String getAttributes(){
+        String formattedEmpNum = String.format("%06d", empNum);
+        return (formattedEmpNum + ", " 
+                + firstName + ", " 
+                + lastName + ", " 
+                + gender + ", " 
+                + workLoc + ", " 
+                + deductRate + ", " 
+                + hourlyWage + ", "
+                + hoursPerWeek + ", "
+                + weeksPerYear + ", "
+                + getYearlySalary() + ", " 
+                + calcNetAnnualIncome());
+    }
     
 }

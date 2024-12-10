@@ -9,21 +9,32 @@
  *
  * @author P0068839
  */
+
+// Imported methods to read and write
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.BufferedReader;
+
 public class Main_jFrame extends javax.swing.JFrame {
     
     // ATTRIBUTES
     public MyHashTable theHT;
     public boolean flag = false;
+    public NewChanges changes;
     
+
     // CONSTRUCTORS
     /**
      * Creates new form MainJFrame
      */
     public Main_jFrame() {
         initComponents();
-        
         theHT = new MyHashTable(10);
-        System.out.println("HERE HERE");
+        changes = new NewChanges();
+        System.out.println("Hashtable made");
+        jPanel1.setVisible(false);
+        jPanel2.setVisible(false);
         
     }
     
@@ -33,6 +44,7 @@ public class Main_jFrame extends javax.swing.JFrame {
     public MyHashTable getTheHT() {
         return theHT;
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,38 +56,47 @@ public class Main_jFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        Load_Employee = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        Clear = new javax.swing.JButton();
+        exit = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton6 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Employee Management System");
 
-        jButton1.setText("Create three employees, add to hash table");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
+        jButton2.setBackground(new java.awt.Color(252, 235, 121));
         jButton2.setText("Display all employees");
+        jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(86, 196, 79));
         jButton3.setText("Add new employee");
+        jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pressed_jButton3(evt);
             }
         });
 
+        jButton5.setBackground(new java.awt.Color(86, 196, 79));
         jButton5.setText("Save all employees to file");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,112 +104,231 @@ public class Main_jFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setText("Load all employees from file");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        Load_Employee.setBackground(new java.awt.Color(252, 235, 121));
+        Load_Employee.setText("Load all employees from file");
+        Load_Employee.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Load_Employee.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                Load_EmployeeActionPerformed(evt);
             }
         });
 
+        jButton8.setBackground(new java.awt.Color(204, 63, 63));
         jButton8.setText("Remove existing employee");
+        jButton8.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pressed_RemoveEmp(evt);
             }
         });
 
+        jButton4.setBackground(new java.awt.Color(86, 196, 79));
         jButton4.setText("Edit employee");
+        jButton4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pressed_jButton4(evt);
             }
         });
 
+        jButton7.setBackground(new java.awt.Color(252, 235, 121));
         jButton7.setText("Search Employee");
+        jButton7.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
             }
         });
 
+        Clear.setBackground(new java.awt.Color(204, 63, 63));
+        Clear.setText("Clear All Saved Data");
+        Clear.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearActionPerformed(evt);
+            }
+        });
+
+        exit.setBackground(new java.awt.Color(204, 63, 63));
+        exit.setText("Exit");
+        exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitActionPerformed(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 10, true));
+
+        jScrollPane1.setBorder(null);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(2);
+        jTextArea1.setText("Are you sure you want to exit?\nWe have detected unsaved information.");
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jButton6.setBackground(new java.awt.Color(245, 245, 245));
+        jButton6.setText("Return");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton9.setBackground(new java.awt.Color(204, 63, 63));
+        jButton9.setText("Exit");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        jButton10.setBackground(new java.awt.Color(86, 196, 79));
+        jButton10.setText("Exit and Save");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton6)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton6)
+                    .addComponent(jButton9)
+                    .addComponent(jButton10))
+                .addGap(0, 16, Short.MAX_VALUE))
+        );
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 8)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel1.setText("*You are about to save an empty file. If you want to clear all saved data used the clear button");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel2.setText("Employee Management System Dashboard");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addComponent(jButton6))
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(exit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5)
+                        .addGap(0, 5, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton8)
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(53, 53, 53))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2)
-                            .addComponent(jButton7))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(Load_Employee, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton8)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Clear, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22))))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(68, 68, 68))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton6)
-                .addGap(9, 9, 9)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addGap(18, 18, 18)
-                .addComponent(jButton4)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Load_Employee, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addComponent(jButton8)
-                .addGap(1, 1, 1)
-                .addComponent(jButton5)
-                .addGap(40, 40, 40))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Clear, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(exit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        if (flag == false){
-        FTE theFTE;
-        PTE thePTE;
-        
-        theFTE = new FTE(111111, "Elmer", "Fudd", 0, 3, 0.2, 80000.00);
-        theHT.addEmployee(theFTE);
-        System.out.println("Added the FTE to the hash table!");
-                
-        thePTE = new PTE(222222, "Daffy", "Duck", 0, 2, 0.22, 10.0, 20.0, 30.0);
-        theHT.addEmployee(thePTE);
-        System.out.println("Added the PTE to the hash table!");
-                
-        theFTE = new FTE(333333, "Lola", "Bunny", 1, 5, 0.17, 90000.00);
-        theHT.addEmployee(theFTE);
-        System.out.println("Added the FTE to the hash table!");
-        flag = true;
-        }
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         
         DisplayAllEmps_jFrame theNumItems_jFrame = new DisplayAllEmps_jFrame();
         theNumItems_jFrame.setVisible(true);
         theNumItems_jFrame.setMainHT(theHT);  // Have theSeparateJFrame mainHT point to the real HT.
+        theNumItems_jFrame.setSaved(changes);
+        theNumItems_jFrame.displayAll();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void pressed_jButton3(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressed_jButton3
@@ -196,29 +336,93 @@ public class Main_jFrame extends javax.swing.JFrame {
         AddNewEmployee_jFrame theANEJFrame = new AddNewEmployee_jFrame();
         theANEJFrame.setVisible(true);
         theANEJFrame.setMainHT(theHT);
+        theANEJFrame.setSaved(changes);
+        
     }//GEN-LAST:event_pressed_jButton3
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        
+        FileWriter file = null;
+        try {
+            if (theHT.getNumInHashTable() == 0){
+                jPanel2.setVisible(true);
+                return;
+            }
+            else{
+            jPanel2.setVisible(false);
+            file = new FileWriter("src/hashTable.txt");
+            BufferedWriter output = new BufferedWriter(file);
+           
+            for (int i = 0; i < theHT.buckets.length; i++) {
+                for (int j = 0; j < theHT.buckets[i].size(); j++) {
+                    EmployeeInfo theEmp = theHT.buckets[i].get(j);
+                   
+                    if (theEmp instanceof FTE) {
+                        FTE theFTE = (FTE) theEmp;
+                        output.write("FTE, " + theFTE.getAttributes() + "\n");
+                    }
+                   
+                    else if (theEmp instanceof PTE) {
+                        PTE thePTE = (PTE) theEmp;
+                        output.write("PTE, " + thePTE.getAttributes() + "\n");
+                    }
+                }
+            }
+            output.close();
+            }
+        } catch (Exception e) {
+            e.getStackTrace();
+        }  
+        changes.saved = true;
         // Here, I need code that walks through the entire hash table
         // and writes the attribute values for each employee to a
         // text file (by using say buffered writer).
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void Load_EmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Load_EmployeeActionPerformed
         // TODO add your handling code here:
+        FileReader file = null;
         
+        try {
+            file = new FileReader("src/hashTable.txt");
+            BufferedReader input = new BufferedReader(file);
+            String line = input.readLine();
+           
+            while (line != null) {
+                System.out.println(line);
+                String[] attributes = line.split(", ");
+                               
+                if ("FTE".equals(attributes[0])) {
+                    FTE theFTE = new FTE(Integer.parseInt(attributes[1]), attributes[2], attributes[3], Integer.parseInt(attributes[4]), Integer.parseInt(attributes[5]), Double.parseDouble(attributes[6]), Double.parseDouble(attributes[7]));
+                    if (theHT.getEmployee(Integer.parseInt(attributes[1])) == null){
+                    theHT.addEmployee(theFTE);
+                }
+                }
+               
+                if ("PTE".equals(attributes[0])) {
+                    PTE thePTE = new PTE(Integer.parseInt(attributes[1]), attributes[2], attributes[3], Integer.parseInt(attributes[4]), Integer.parseInt(attributes[5]), Double.parseDouble(attributes[6]), Double.parseDouble(attributes[7]), Double.parseDouble(attributes[8]), Double.parseDouble(attributes[9]));
+                    if (theHT.getEmployee(Integer.parseInt(attributes[1])) == null){
+                    theHT.addEmployee(thePTE);
+                    }
+                }
+                line = input.readLine();
+            }
+            input.close();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }    
+        changes.saved = false;
         // Here, I need code that reads the attribute values for the employee
         // data stored in a text file (by say using buffered reader) and adding
         // each of those employees to the hash table.
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_Load_EmployeeActionPerformed
 
     private void pressed_RemoveEmp(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressed_RemoveEmp
         // TODO add your handling code here:
         RemoveEmp_jFrame theRemoveEmp_jFrame = new RemoveEmp_jFrame();
         theRemoveEmp_jFrame.setVisible(true);
         theRemoveEmp_jFrame.setMainHT(theHT);
+        theRemoveEmp_jFrame.setSaved(changes);
     }//GEN-LAST:event_pressed_RemoveEmp
 
     private void pressed_jButton4(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressed_jButton4
@@ -226,6 +430,7 @@ public class Main_jFrame extends javax.swing.JFrame {
         EditEmployeeSearch_jFrame theEditEmployeeJFrame = new EditEmployeeSearch_jFrame();
         theEditEmployeeJFrame.setVisible(true);
         theEditEmployeeJFrame.setMainHT(theHT);
+        theEditEmployeeJFrame.setSaved(changes);
     }//GEN-LAST:event_pressed_jButton4
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -234,6 +439,63 @@ public class Main_jFrame extends javax.swing.JFrame {
         theSearchEmp_jFrame.setVisible(true);
         theSearchEmp_jFrame.setMainHT(theHT);
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearActionPerformed
+        // TODO add your handling code here:
+        Clear_jFrame Clear_jFrame = new Clear_jFrame();
+        Clear_jFrame.setVisible(true);
+    }//GEN-LAST:event_ClearActionPerformed
+
+    private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
+        // TODO add your handling code here:
+        System.out.println(changes.saved);
+        if (changes.saved == false){
+           jPanel1.setVisible(true);
+        }
+        else{
+            this.dispose();
+        }
+        
+    }//GEN-LAST:event_exitActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+        FileWriter file = null;
+        try {
+            file = new FileWriter("src/hashTable.txt");
+            BufferedWriter output = new BufferedWriter(file);
+           
+            for (int i = 0; i < theHT.buckets.length; i++) {
+                for (int j = 0; j < theHT.buckets[i].size(); j++) {
+                    EmployeeInfo theEmp = theHT.buckets[i].get(j);
+                   
+                    if (theEmp instanceof FTE) {
+                        FTE theFTE = (FTE) theEmp;
+                        output.write("FTE, " + theFTE.getAttributes() + "\n");
+                    }
+                   
+                    else if (theEmp instanceof PTE) {
+                        PTE thePTE = (PTE) theEmp;
+                        output.write("PTE, " + thePTE.getAttributes() + "\n");
+                    }
+                }
+            }
+            output.close();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        this.dispose();
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        jPanel1.setVisible(false);
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     
     
@@ -276,8 +538,11 @@ public class Main_jFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Clear;
+    private javax.swing.JButton Load_Employee;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton exit;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -285,5 +550,12 @@ public class Main_jFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }

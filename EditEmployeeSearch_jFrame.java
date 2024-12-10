@@ -12,16 +12,22 @@ import javax.swing.table.DefaultTableModel;
  */
     public class EditEmployeeSearch_jFrame extends javax.swing.JFrame {
     private MyHashTable mainHT;
+    private NewChanges changes;
+
     /**
      * Creates new form RemoveEmp
      */
     public EditEmployeeSearch_jFrame() {
         initComponents();
-        jLabel2.setVisible(false);
-        jLabel5.setVisible(false);
+        invalidNum.setVisible(false);
+        errorLabel.setVisible(false);
+        noEmps.setVisible(false);
     }
     public void setMainHT(MyHashTable theRefVal) {
         mainHT = theRefVal;
+    }
+    public void setSaved(NewChanges theRefVal) {
+        changes = theRefVal;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,24 +41,25 @@ import javax.swing.table.DefaultTableModel;
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        invalidNum = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jLabel5 = new javax.swing.JLabel();
+        noEmps = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
 
         jLabel3.setText("jLabel3");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Employee Number:");
 
         jTextField1.setToolTipText("Enter a six digit employee number (e.g. 123456)");
 
-        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel2.setText("*Invalid please select an employee that exists");
+        invalidNum.setForeground(new java.awt.Color(255, 0, 0));
+        invalidNum.setText("*Invalid please select an employee that exists");
 
         jButton1.setText("Confirm");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -68,6 +75,7 @@ import javax.swing.table.DefaultTableModel;
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(235, 43, 40));
         jButton3.setText("Exit");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,8 +88,11 @@ import javax.swing.table.DefaultTableModel;
         jTextArea1.setRows(5);
         jScrollPane2.setViewportView(jTextArea1);
 
-        jLabel5.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel5.setText("*There are no employees in the database please add employees");
+        noEmps.setForeground(new java.awt.Color(255, 0, 0));
+        noEmps.setText("*There are no employees in the database please add employees");
+
+        errorLabel.setForeground(new java.awt.Color(255, 0, 0));
+        errorLabel.setText("*An error has occured, please hover over the tooltips to ensure your inputs are correct");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -99,17 +110,18 @@ import javax.swing.table.DefaultTableModel;
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(invalidNum, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
+                            .addComponent(noEmps)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButton1)
                                 .addGap(60, 60, 60)
                                 .addComponent(jButton2)
                                 .addGap(61, 61, 61)
-                                .addComponent(jButton3)))))
+                                .addComponent(jButton3))
+                            .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -119,12 +131,14 @@ import javax.swing.table.DefaultTableModel;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(invalidNum))
                 .addGap(32, 32, 32)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addGap(23, 23, 23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(noEmps)
+                .addGap(7, 7, 7)
+                .addComponent(errorLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
@@ -142,31 +156,45 @@ import javax.swing.table.DefaultTableModel;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        try{
+        errorLabel.setVisible(false);
         int empNum = Integer.parseInt(jTextField1.getText());
         int numberSize = jTextField1.getText().length();
         if ((mainHT.getEmployee(empNum)) == null || (numberSize != 6)){
-            jLabel2.setVisible(true);
+            invalidNum.setVisible(true);
             if (mainHT.getNumInHashTable() == 0){
-               jLabel5.setVisible(true);
+               noEmps.setVisible(true);
           }
           return;
         }
         EditEmployee_jFrame theEditEmployeeJFrame = new EditEmployee_jFrame();
         theEditEmployeeJFrame.setVisible(true);
         theEditEmployeeJFrame.setMainHT(mainHT);
+        theEditEmployeeJFrame.setSaved(changes);
         theEditEmployeeJFrame.setEmpNum(empNum);
-        this.dispose();
+        
+        invalidNum.setVisible(false);
+        noEmps.setVisible(false);
+        this.dispose(); 
+        }
+        catch (Exception e) {
+            errorLabel.setVisible(true);
+            invalidNum.setVisible(false);
+            e.getStackTrace();
+        }  
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        try{
+        errorLabel.setVisible(false);
         int empNum = Integer.parseInt(jTextField1.getText());
         int numberSize = jTextField1.getText().length();
         if ((mainHT.getEmployee(empNum)) == null || (numberSize != 6)){
-            jLabel2.setVisible(true);
+            invalidNum.setVisible(true);
             jTextArea1.setText("");
             if (mainHT.getNumInHashTable() == 0){
-               jLabel5.setVisible(true);
+               noEmps.setVisible(true);
         }
             return;
         }
@@ -177,8 +205,8 @@ import javax.swing.table.DefaultTableModel;
                 +  "Employee Number: " + jTextField1.getText() + "\n" 
                 + "First Name: " + mainHT.getEmployee(empNum).firstName + "\n" 
                 + "Last Name: " + mainHT.getEmployee(empNum).lastName + "\n" 
-                + "Gender: " + mainHT.getEmployee(empNum).gender + "\n" 
-                + "Work Location: " + mainHT.getEmployee(empNum).workLoc + "\n" 
+                + "Gender: " + mainHT.getEmployee(empNum).getGender() + "\n" 
+                + "Work Location: " + mainHT.getEmployee(empNum).getWorkLoc() + "\n" 
                 + "Deduction Rate: " + mainHT.getEmployee(empNum).deductRate + "\n" 
                 + "Gross Annual Salary: " + ((FTE)mainHT.getEmployee(empNum)).yearlySalary + "\n" 
                 + "Net Annual Income: " + net_income);
@@ -190,8 +218,8 @@ import javax.swing.table.DefaultTableModel;
                 +  "Employee Number: " + jTextField1.getText() + "\n" 
                 + "First Name: " + mainHT.getEmployee(empNum).firstName + "\n" 
                 + "Last Name: " + mainHT.getEmployee(empNum).lastName+ "\n" 
-                + "Gender: " + mainHT.getEmployee(empNum).gender + "\n" 
-                + "Work Location: " + mainHT.getEmployee(empNum).workLoc + "\n" 
+                + "Gender: " + mainHT.getEmployee(empNum).getGender() + "\n" 
+                + "Work Location: " + mainHT.getEmployee(empNum).getWorkLoc() + "\n" 
                 + "Deduction Rate: " + mainHT.getEmployee(empNum).deductRate + "\n" 
                 + "Gross Annual Salary: " + gross_income + "\n" 
                 + "Net Annual Income: " + net_income + "\n" 
@@ -199,6 +227,12 @@ import javax.swing.table.DefaultTableModel;
                 + "Hours Per Week: " + ((PTE)mainHT.getEmployee(empNum)).hoursPerWeek + "\n" 
                 + "Weeks Per Year: " + ((PTE)mainHT.getEmployee(empNum)).weeksPerYear);
         }
+        }
+        catch (Exception e) {
+            errorLabel.setVisible(true);
+            invalidNum.setVisible(false);
+            e.getStackTrace();
+        }  
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -238,15 +272,16 @@ import javax.swing.table.DefaultTableModel;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel errorLabel;
+    private javax.swing.JLabel invalidNum;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel noEmps;
     // End of variables declaration//GEN-END:variables
 }
